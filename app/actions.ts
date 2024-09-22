@@ -124,6 +124,19 @@ export async function createPost(
   const title = formData.get("title") as string;
   const imageUrl = formData.get("imageUrl") as string | null;
   const subName = formData.get("subName") as string;
+  let subreddit = await prisma.subreddit.findUnique({
+    where: { name: subName },
+  });
+  
+  // If the subreddit doesn't exist, create it
+  if (!subreddit) {
+    subreddit = await prisma.subreddit.create({
+      data: {
+        name: subName,
+        userId: user.id, // Assuming the user is the creator of the new subreddit
+      },
+    });
+  }
 
   const data = await prisma.post.create({
     data: {
