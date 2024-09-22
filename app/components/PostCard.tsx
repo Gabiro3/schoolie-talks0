@@ -58,6 +58,9 @@ export function PostCard({
           <p className="text-xs text-muted-foreground">
             Posted by: <span className="hover:text-primary">u/{userName}</span>
           </p>
+          <p className="text-xs text-muted-foreground">
+            {formatTimeToNow(new Date(createdAt))}
+          </p>
           {formatTimeToNow(new Date(createdAt))}
         </div>
 
