@@ -12,6 +12,8 @@ import { Suspense } from "react";
 import { SuspenseCard } from "./components/SuspenseCard";
 import Pagination from "./components/Pagination";
 import { unstable_noStore as noStore } from "next/cache";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { generateUsername } from "unique-username-generator";
 
 async function getData(searchParam: string) {
   noStore();
@@ -54,11 +56,38 @@ async function getData(searchParam: string) {
   return { data, count };
 }
 
-export default function Home({
+export default async function Home({
   searchParams,
 }: {
   searchParams: { page: string };
 }) {
+  // Check if user is logged in via Kinde
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  // If a user is logged in, fetch or create the user in your DB
+  if (user && user.id) {
+    let dbUser = await prisma.user.findUnique({
+      where: {
+        id: user.id,
+      },
+    });
+
+    // If the user doesn't exist in the DB, create a new user
+    if (!dbUser) {
+      dbUser = await prisma.user.create({
+        data: {
+          id: user.id,
+          email: user.email ?? "",
+          firstName: user.given_name ?? "",
+          lastName: user.family_name ?? "",
+          imageUrl: user.picture,
+          userName: generateUsername("-", 3, 15),
+        },
+      });
+    }
+  }
+
   return (
     <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-4 mb-10">
       <div className="w-[65%] flex flex-col gap-y-5">
