@@ -131,28 +131,37 @@ export default async function Home({
 
 async function ShowItems({ searchParams }: { searchParams: { page: string } }) {
   const { count, data } = await getData(searchParams.page);
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
   return (
     <>
-      {data.map((post) => (
-        <PostCard
-          id={post.id}
-          imageString={post.imageString}
-          jsonContent={post.textContent}
-          subName={post.subName as string}
-          title={post.title}
-          key={post.id}
-          commentAmount={post.Comment.length}
-          userName={post.User?.userName as string}
-          voteCount={post.Vote.reduce((acc, vote) => {
-            if (vote.voteType === "UP") return acc + 1;
-            if (vote.voteType === "DOWN") return acc - 1;
+      {data.map((post) => {
+        const userVote = post.Vote.find(vote => vote.userId === user.id);
 
-            return acc;
-          }, 0)}
-        />
-      ))}
+        return (
+          <PostCard
+            id={post.id}
+            imageString={post.imageString}
+            jsonContent={post.textContent || "Empty query"}
+            subName={post.subName as string}
+            title={post.title}
+            key={post.id}
+            commentAmount={post.Comment.length}
+            userName={post.User?.userName as string}
+            voteCount={post.Vote.reduce((acc, vote) => {
+              if (vote.voteType === "UP") return acc + 1;
+              if (vote.voteType === "DOWN") return acc - 1;
+              return acc;
+            }, 0)}
+            createdAt={post.createdAt}
+            userVote={userVote?.voteType}  // Pass user's vote type (UP or DOWN or undefined)
+          />
+        );
+      })}
 
       <Pagination totalPages={Math.ceil(count / 10)} />
     </>
   );
 }
+

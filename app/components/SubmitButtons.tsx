@@ -38,7 +38,7 @@ export function SaveButton() {
   );
 }
 
-export function UpVote() {
+export function UpVote({ isActive }: { isActive: boolean }) {
   const { pending } = useFormStatus();
 
   return (
@@ -48,14 +48,20 @@ export function UpVote() {
           <Loader2 className="h-4 w-4 animate-spin" />
         </Button>
       ) : (
-        <Button variant="outline" size="sm" type="submit">
+        <Button
+          variant={isActive ? "default" : "outline"} // Change variant if active
+          className={isActive ? "bg-green-500" : ""}
+          size="sm"
+          type="submit"
+        >
           <ArrowUp className="h-4 w-4" />
         </Button>
       )}
     </>
   );
 }
-export function DownVote() {
+
+export function DownVote({ isActive }: { isActive: boolean }) {
   const { pending } = useFormStatus();
 
   return (
@@ -65,10 +71,16 @@ export function DownVote() {
           <Loader2 className="h-4 w-4 animate-spin" />
         </Button>
       ) : (
-        <Button variant="outline" size="sm" type="submit">
+        <Button
+          variant={isActive ? "default" : "outline"} // Change variant if active
+          className={isActive ? "bg-red-500" : ""}
+          size="sm"
+          type="submit"
+        >
           <ArrowDown className="h-4 w-4" />
         </Button>
       )}
     </>
   );
 }
+

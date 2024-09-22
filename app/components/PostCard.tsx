@@ -7,6 +7,7 @@ import { CopyLink } from "./CopyLink";
 import { handleVote } from "../actions";
 import { DownVote, UpVote } from "./SubmitButtons";
 import { RenderToJson } from "./RendertoJson";
+import formatTimeToNow from "../lib/format-time";
 
 interface iAppProps {
   title: string;
@@ -17,6 +18,8 @@ interface iAppProps {
   imageString: string | null;
   voteCount: number;
   commentAmount: number;
+  createdAt: Date;
+  userVote?: "UP" | "DOWN"; 
 }
 
 export function PostCard({
@@ -28,6 +31,8 @@ export function PostCard({
   userName,
   voteCount,
   commentAmount,
+  createdAt,
+  userVote
 }: iAppProps) {
   return (
     <Card className="flex relative overflow-hidden">
@@ -35,13 +40,13 @@ export function PostCard({
         <form action={handleVote}>
           <input type="hidden" name="voteDirection" value="UP" />
           <input type="hidden" name="postId" value={id} />
-          <UpVote />
+          <UpVote isActive={userVote === "UP"}/>
         </form>
         {voteCount}
         <form action={handleVote}>
           <input type="hidden" name="voteDirection" value="DOWN" />
           <input type="hidden" name="postId" value={id} />
-          <DownVote />
+          <DownVote isActive={userVote === "DOWN"}/>
         </form>
       </div>
 
@@ -53,6 +58,7 @@ export function PostCard({
           <p className="text-xs text-muted-foreground">
             Posted by: <span className="hover:text-primary">u/{userName}</span>
           </p>
+          {formatTimeToNow(new Date(createdAt))}
         </div>
 
         <div className="px-2">
