@@ -61,7 +61,6 @@ export function PostCard({
           <p className="text-xs text-muted-foreground">
             {formatTimeToNow(new Date(createdAt))}
           </p>
-          {formatTimeToNow(new Date(createdAt))}
         </div>
 
         <div className="px-2">
