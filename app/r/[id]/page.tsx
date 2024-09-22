@@ -45,6 +45,7 @@ async function getData(name: string, searchParam: string) {
             imageString: true,
             id: true,
             textContent: true,
+            createdAt: true,
             Vote: {
               select: {
                 userId: true,
@@ -108,6 +109,7 @@ export default async function SubRedditRoute({
 
                   return acc;
                 }, 0)}
+                createdAt={post.createdAt}
               />
             ))}
 
