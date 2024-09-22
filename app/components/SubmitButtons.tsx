@@ -49,7 +49,7 @@ export function UpVote({ isActive }: { isActive: boolean }) {
         </Button>
       ) : (
         <Button
-          variant={isActive ? "default" : "outline"} // Change variant if active
+          variant={isActive ? "solid" : "outline"} // Change variant if active
           className={isActive ? "bg-green-500" : ""}
           size="sm"
           type="submit"
@@ -72,7 +72,7 @@ export function DownVote({ isActive }: { isActive: boolean }) {
         </Button>
       ) : (
         <Button
-          variant={isActive ? "default" : "outline"} // Change variant if active
+          variant={isActive ? "solid" : "outline"} // Change variant if active
           className={isActive ? "bg-red-500" : ""}
           size="sm"
           type="submit"

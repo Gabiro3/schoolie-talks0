@@ -13,9 +13,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 async function getData(id: string) {
   noStore();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
   const data = await prisma.post.findUnique({
     where: {
       id: id,
@@ -80,7 +83,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
             <form action={handleVote}>
               <input type="hidden" name="voteDirection" value="UP" />
               <input type="hidden" name="postId" value={data.id} />
-              <UpVote />
+              <UpVote isActive={data.Vote.some(v => v.voteType === "UP")} />
             </form>
             {data.Vote.reduce((acc, vote) => {
               if (vote.voteType === "UP") return acc + 1;
@@ -91,7 +94,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
             <form action={handleVote}>
               <input type="hidden" name="voteDirection" value="DOWN" />
               <input type="hidden" name="postId" value={data.id} />
-              <DownVote />
+              <DownVote isActive={data.Vote.some(v => v.voteType === "DOWN")} />
             </form>
           </div>
 
