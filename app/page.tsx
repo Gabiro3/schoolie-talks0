@@ -14,7 +14,6 @@ import Pagination from "./components/Pagination";
 import { unstable_noStore as noStore } from "next/cache";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { generateUsername } from "unique-username-generator";
-import Sidebar from "./components/Sidebar";
 
 async function getData(searchParam: string) {
   noStore();
@@ -98,7 +97,6 @@ export default async function Home({
         </Suspense>
       </div>
       <div className="w-[35%]">
-        <Sidebar />
         <Card>
           <Image src={Banner} alt="Banner" />
           <div className="p-2">
