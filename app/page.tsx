@@ -56,21 +56,13 @@ async function getData(searchParam: string) {
   return { data, count };
 }
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { page: string };
-}) {
-  // Check if user is logged in via Kinde
+export default async function Home({ searchParams }: { searchParams: { page: string } }) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  // If a user is logged in, fetch or create the user in your DB
-  if (user && user.id) {
+  if (user) {
     let dbUser = await prisma.user.findUnique({
-      where: {
-        id: user.id,
-      },
+      where: { id: user.id },
     });
 
     // If the user doesn't exist in the DB, create a new user
@@ -91,9 +83,9 @@ export default async function Home({
   return (
     <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-4 mb-10">
       <div className="w-[65%] flex flex-col gap-y-5">
-        <CreatePostCard />
+        {user && <CreatePostCard />} {/* Only show CreatePostCard if user is logged in */}
         <Suspense fallback={<SuspenseCard />} key={searchParams.page}>
-          <ShowItems searchParams={searchParams} />
+          <ShowItems searchParams={searchParams} user={user} />
         </Suspense>
       </div>
       <div className="w-[35%]">
@@ -109,11 +101,9 @@ export default async function Home({
               <h1 className="font-medium pl-3">Home</h1>
             </div>
             <p className="text-sm text-muted-foreground pt-2">
-              Your Home Reddit frontpage. Come here to check in with your
-              favorite communites!
+              Your Home Schoolie Talks frontpage. Come here to check in with your favorite communities!
             </p>
             <Separator className="my-5" />
-
             <div className="flex flex-col gap-y-3">
               <Button asChild variant="secondary">
                 <Link href="/r/janmarshal/create">Create Post</Link>
@@ -129,15 +119,13 @@ export default async function Home({
   );
 }
 
-async function ShowItems({ searchParams }: { searchParams: { page: string } }) {
+async function ShowItems({ searchParams, user }: { searchParams: { page: string }; user: any }) {
   const { count, data } = await getData(searchParams.page);
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
 
   return (
     <>
       {data.map((post) => {
-        const userVote = post.Vote.find(vote => vote.userId === user.id);
+        const userVote = user ? post.Vote.find(vote => vote.userId === user.id) : undefined;
 
         return (
           <PostCard
@@ -164,4 +152,5 @@ async function ShowItems({ searchParams }: { searchParams: { page: string } }) {
     </>
   );
 }
+
 
