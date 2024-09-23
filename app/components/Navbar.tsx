@@ -1,6 +1,7 @@
 import Link from "next/link";
-import RedditText from "../../public/logo-name.svg";
-import redditMobile from "../../public/reddit-full.svg";
+// import RedditText from "../../public/logo-name.svg";
+import TalksLogo from "../../public/talks-logo.svg";
+// import redditImage from "../../public/reddit-full.svg";
 import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -18,13 +19,8 @@ export async function Navbar() {
     <nav className="h-[10vh] w-full flex items-center border-b px-5 lg:px-14 justify-between">
       <Link href="/" className="flex items-center gap-x-3">
         <Image
-          src={redditMobile}
-          alt="Reddit mobile icon"
-          className="h-10 w-fit"
-        />
-        <Image
-          src={RedditText}
-          alt="Reddit Desktop"
+          src={TalksLogo}
+          alt="Talks Desktop"
           className="h-9 w-fit hidden lg:block"
         />
       </Link>
