@@ -6,6 +6,7 @@ import prisma from "./lib/db";
 import { Prisma, TypeOfVote } from "@prisma/client";
 import { JSONContent } from "@tiptap/react";
 import { revalidatePath } from "next/cache";
+import { BookOpen, Beaker, Globe, History, Users, Atom, Star } from "lucide-react";  // Lucide-react icons
 
 export async function updateUsername(prevState: any, formData: FormData) {
   const { getUser } = getKindeServerSession();
@@ -223,3 +224,61 @@ export async function createComment(formData: FormData) {
 
   revalidatePath(`/post/${postId}`);
 }
+
+
+
+
+
+// Function to map category names to icons
+const getCategoryIcon = (categoryName: string) => {
+  switch (categoryName) {
+    case "Mathematics":
+      return typeof Atom; 
+    case "Philosophy":
+      return typeof BookOpen;
+    case "Chemistry":
+      return typeof Beaker;
+    case "Physics":
+      return typeof Atom;
+    case "Social life":
+      return typeof Users;
+    case "History":
+      return typeof History;
+    case "Geography":
+      return typeof Globe;
+    default:
+      return typeof Star;
+  }
+};
+
+export async function fetchCategories() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    // Fetch categories from the database
+    const categories = await prisma.category.findMany({
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+      },
+    });
+
+    // Add icons to categories
+    const categoriesWithIcons = categories.map((category) => ({
+      ...category,
+      icon: getCategoryIcon(category.name),  // Add icon based on the category name
+    }));
+
+    return categoriesWithIcons;
+  } catch (error) {
+    console.error("Failed to fetch categories", error);
+    throw new Error("Failed to fetch categories");
+  }
+}
+
