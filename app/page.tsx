@@ -104,6 +104,7 @@ export default async function Home({ searchParams }: { searchParams: { page: str
               Your Home Schoolie Talks frontpage. Come here to check in with your favorite communities!
             </p>
             <Separator className="my-5" />
+            { user && 
             <div className="flex flex-col gap-y-3">
               <Button asChild variant="secondary">
                 <Link href="/r/janmarshal/create">Create Post</Link>
@@ -111,7 +112,7 @@ export default async function Home({ searchParams }: { searchParams: { page: str
               <Button asChild>
                 <Link href="/r/create">Create Community</Link>
               </Button>
-            </div>
+            </div>}
           </div>
         </Card>
       </div>
