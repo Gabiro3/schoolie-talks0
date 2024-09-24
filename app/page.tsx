@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import Banner from "../public/banner.png";
-import HelloImage from "../public/hero-image.png";
+import HelloImage from "../public/books.svg";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

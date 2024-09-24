@@ -1,6 +1,6 @@
 import Link from "next/link";
 // import RedditText from "../../public/logo-name.svg";
-import TalksLogo from "../../public/talks-logo.svg";
+import TalksLogo from "../../public/utalks-logo.svg";
 // import redditImage from "../../public/reddit-full.svg";
 import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
