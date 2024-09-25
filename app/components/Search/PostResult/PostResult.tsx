@@ -10,7 +10,7 @@ interface PostResultProps {
 const PostResult = ({ communityName, postId, title }: PostResultProps) => {
 	return (
 		<Link
-			href={`/r/${communityName}/comments/${postId}`}
+			href={`/post/${postId}`}
 			className="p-2 hover:bg-btn-text text-primary"
 		>
 			<div className="text-xs font-medium">r/{communityName}</div>

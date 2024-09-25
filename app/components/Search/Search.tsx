@@ -53,19 +53,28 @@ const Search = () => {
         value={search}
         onChange={updateSearch}
         placeholder="Search Reddit"
-        className="w-full rounded-3xl hover:border-post-hover focus:border-post-hover"
+        className="w-full rounded-md hover:border-post-hover focus:border-post-hover"
       />
       {loading ? (
         <ResultSkeleton />
       ) : (
-        <div className="results">
-          {posts.map(post => (
-            <PostResult key={post.id} {...post} />
-          ))}
-          {communities.map(community => (
-            <CommunityResult key={community.id} {...community} />
-          ))}
-        </div>
+        <div className="results bg-gray-100 mt-4 p-4 rounded-md">
+  {posts.map((post) => (
+    <PostResult
+      key={post.id}
+      communityName={post.communityName} // Ensure you're passing the community name correctly from post
+      postId={post.id} // Pass the postId explicitly
+      title={post.title} // Pass the title explicitly
+    />
+  ))}
+  {communities.map((community) => (
+    <CommunityResult
+      key={community.id}
+      name={community.name} // Ensure community name is passed correctly
+    />
+  ))}
+</div>
+
       )}
     </div>
   );

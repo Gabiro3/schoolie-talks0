@@ -228,9 +228,6 @@ export async function fetchPosts(search: string) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  if (!user) {
-    return redirect("/api/auth/login");
-  }
 
   try {
     let posts;
@@ -283,9 +280,6 @@ export async function fetchCommunities(search: string) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  if (!user) {
-    return redirect("/api/auth/login");
-  }
 
   try {
     // Fetch communities where the name contains the search term
