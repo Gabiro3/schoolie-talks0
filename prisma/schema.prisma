@@ -34,6 +34,8 @@ model Subreddit {
   userId      String?
 
   posts Post[]
+  
+  categories Category[] @relation("SubredditCategories")
 }
 
 model Post {
@@ -51,6 +53,8 @@ model Post {
   subName   String?
   User      User?      @relation(fields: [userId], references: [id])
   userId    String?
+
+  categories Category[] @relation("PostCategories")
 }
 
 enum TypeOfVote {
@@ -81,8 +85,10 @@ model Comemnt {
 }
 
 model Category {
-  id        String   @id @default(uuid())  // Unique identifier for the category
-  name      String   @unique               // Category name (must be unique)
-  createdAt DateTime @default(now())       // Timestamp for when the category was created
-}
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
 
+  posts      Post[]      @relation("PostCategories")
+  subreddits Subreddit[] @relation("SubredditCategories")
+}

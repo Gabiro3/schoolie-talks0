@@ -11,6 +11,7 @@ import {
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { UserDropdown } from "./UserDropdown";
+import Search from "./Search/Search";
 
 export async function Navbar() {
   const { getUser } = getKindeServerSession();
@@ -24,6 +25,7 @@ export async function Navbar() {
           className="h-9 w-fit hidden lg:block"
         />
       </Link>
+      <Search />
 
       <div className="flex items-center gap-x-4">
         <ThemeToggle />

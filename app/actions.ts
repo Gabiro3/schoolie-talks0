@@ -224,7 +224,86 @@ export async function createComment(formData: FormData) {
 
   revalidatePath(`/post/${postId}`);
 }
+export async function fetchPosts(search: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
 
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    let posts;
+
+    // Check if the search query starts with a "/"
+    if (search.startsWith("/")) {
+      // Remove the "/" to get the category keyword
+      const category = search.slice(1);
+
+      // Fetch posts by category
+      posts = await prisma.post.findMany({
+        where: {
+          categories: {
+            some: {
+              name: {
+                contains: category,
+                mode: 'insensitive',
+              },
+            },
+          },
+        },
+        include: {
+          categories: true, // Include categories for the post
+        },
+      });
+    } else {
+      // Text-based search (searching for post titles)
+      posts = await prisma.post.findMany({
+        where: {
+          title: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        },
+        include: {
+          categories: true, // Include categories for the post
+        },
+      });
+    }
+
+    return posts;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    throw new Error("Failed to fetch posts");
+  }
+}
+
+// Fetch communities from the database
+export async function fetchCommunities(search: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    // Fetch communities where the name contains the search term
+    const communities = await prisma.subreddit.findMany({
+      where: {
+        name: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+    });
+
+    return communities;
+  } catch (error) {
+    console.error("Error fetching communities:", error);
+    throw new Error("Failed to fetch communities");
+  }
+}
 
 
 
