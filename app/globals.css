@@ -61,3 +61,31 @@
 .ProseMirror:focus {
   outline: none;
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary); /* Color of the scrollbar thumb on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Make scrollbar thin */
+  scrollbar-color: #888 #f1f1f1; /* Color of the scrollbar thumb and track */
+}
+
+*::-webkit-scrollbar {
+  height: 8px;
+}
