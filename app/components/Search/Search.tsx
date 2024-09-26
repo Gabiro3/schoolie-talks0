@@ -24,11 +24,9 @@ const Search = () => {
 
       try {
         if (search.startsWith("/")) {
-          // Category-based search
           const fetchedPosts = await fetchPosts(search);
           setPosts(fetchedPosts);
         } else {
-          // Text-based search for both posts and communities
           const [fetchedPosts, fetchedCommunities] = await Promise.all([
             fetchPosts(search),
             fetchCommunities(search),
@@ -51,39 +49,45 @@ const Search = () => {
   };
 
   return (
-    <Card className="px-4 py-3 flex items-center gap-x-4 shadow-md rounded-lg">
-      <div className="flex items-center gap-x-2 w-full">
-        <Input
-          value={search}
-          onChange={updateSearch}
-          placeholder="Search Reddit"
-          className="w-full border-none rounded-md shadow-sm focus:ring-0"
-        />
-        <Button variant="outline" size="icon" className="ml-2">
-          <SearchIcon className="w-5 h-5" />
-        </Button>
-      </div>
+    <div className="relative flex-1 max-w-[690px] hidden md:block px-4">
+      <Card className="px-4 py-2 flex items-center gap-x-4 shadow-md rounded-lg">
+        <div className="flex items-center gap-x-2 w-full">
+          <Input
+            value={search}
+            onChange={updateSearch}
+            placeholder="Search Reddit"
+            className="w-full border-none rounded-md shadow-sm focus:ring-0"
+          />
+          <Button variant="outline" size="icon" className="ml-2">
+            <SearchIcon className="w-5 h-5" />
+          </Button>
+        </div>
+      </Card>
+
+      {/* Results container */}
       {loading ? (
         <ResultSkeleton />
       ) : (
-        <div className="results bg-gray-100 mt-4 p-4 rounded-md w-full">
-          {posts.map((post) => (
-            <PostResult
-              key={post.id}
-              communityName={post.communityName}
-              postId={post.id}
-              title={post.title}
-            />
-          ))}
-          {communities.map((community) => (
-            <CommunityResult
-              key={community.id}
-              name={community.name}
-            />
-          ))}
+        <div className="absolute top-[100%] left-0 w-full bg-white border rounded-md shadow-lg mt-2 max-h-[300px] overflow-y-auto">
+          <div className="p-2">
+            {posts.map((post) => (
+              <PostResult
+                key={post.id}
+                communityName={post.communityName}
+                postId={post.id}
+                title={post.title}
+              />
+            ))}
+            {communities.map((community) => (
+              <CommunityResult
+                key={community.id}
+                name={community.name}
+              />
+            ))}
+          </div>
         </div>
       )}
-    </Card>
+    </div>
   );
 };
 
