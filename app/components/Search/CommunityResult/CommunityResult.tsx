@@ -9,7 +9,7 @@ const CommunityResult = ({ name }: CommunityResultProps) => {
 	return (
 		<Link
 			href={`/r/${name}`}
-			className="flex items-center gap-2 p-2 hover:bg-gray-200 block"
+			className="flex items-center gap-2 p-2 hover:bg-gray-200 text-primary block"
 		>
 			<div>
 				<div className="text-sm font-medium">{name}</div>
