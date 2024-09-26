@@ -11,7 +11,7 @@ const PostResult = ({ communityName, postId, title }: PostResultProps) => {
 	return (
 		<Link
 			href={`/post/${postId}`}
-			className="p-2 hover:bg-gray-200 text-primary block"
+			className="p-2 hover:bg-gray-200 block"
 		>
 			<div className="text-xs font-semibold">r/{communityName}</div>
 			<div className="text-sm">{title}</div>
