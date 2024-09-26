@@ -77,7 +77,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary); /* Color of the scrollbar thumb on hover */
+  background: orange; /* Color of the scrollbar thumb on hover */
 }
 
 /* For Firefox */

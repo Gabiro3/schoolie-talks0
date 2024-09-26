@@ -1,18 +1,48 @@
 "use client"
-import { useState, ChangeEvent } from 'react';
+
+import { fetchPosts, fetchCommunities } from '@/app/actions'; // Ensure correct path
+import { useState, useEffect, ChangeEvent } from 'react';
 import { Input } from '@/components/ui/input';
 import CommunityResult from './CommunityResult/CommunityResult';
 import PostResult from './PostResult/PostResult';
 import ResultSkeleton from './ResultSkeleton/ResultSkeleton';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react"; // Use any icon package you prefer
 
 const Search = () => {
   const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [posts, setPosts] = useState<any[]>([]);
   const [communities, setCommunities] = useState<any[]>([]);
+
+  useEffect(() => {
+    const performSearch = async () => {
+      if (search.length === 0) return;
+
+      setLoading(true);
+
+      try {
+        if (search.startsWith("/")) {
+          const fetchedPosts = await fetchPosts(search);
+          setPosts(fetchedPosts);
+        } else {
+          const [fetchedPosts, fetchedCommunities] = await Promise.all([
+            fetchPosts(search),
+            fetchCommunities(search),
+          ]);
+          setPosts(fetchedPosts);
+          setCommunities(fetchedCommunities);
+        }
+      } catch (error) {
+        console.error("Search failed:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    performSearch();
+  }, [search]);
 
   const updateSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -62,10 +92,8 @@ const Search = () => {
       )}
     </div>
   );
-};
+};;
 
 export default Search;
-
-
 
 
